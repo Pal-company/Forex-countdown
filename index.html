@@ -19,21 +19,29 @@
     <div id="countdown"></div>
 
     <script>
-        // Define the market closing time (in UTC)
-        const marketClosingTime = new Date();
-        marketClosingTime.setUTCHours(21, 0, 0); // Adjust the time as needed
-
         function updateCountdown() {
             const currentTime = new Date();
-            const timeRemaining = marketClosingTime - currentTime;
+            const marketOpenTime = new Date();
+            marketOpenTime.setUTCHours(13, 0, 0); // Replace with the market opening time (in UTC)
+            const marketCloseTime = new Date();
+            marketCloseTime.setUTCHours(21, 0, 0); // Replace with the market closing time (in UTC)
 
-            if (timeRemaining <= 0) {
-                document.getElementById('countdown').innerHTML = 'Market is closed.';
-            } else {
+            if (currentTime >= marketCloseTime) {
+                // Market is closed, count until it opens
+                const timeUntilOpen = new Date(currentTime);
+                timeUntilOpen.setUTCDate(timeUntilOpen.getUTCDate() + 1);
+                timeUntilOpen.setUTCHours(13, 0, 0); // Replace with the market opening time (in UTC)
+                const timeRemaining = timeUntilOpen - currentTime;
                 const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
                 const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
+                document.getElementById('countdown').innerHTML = `Time until market opens: ${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                // Market is open, count until it closes
+                const timeRemaining = marketCloseTime - currentTime;
+                const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
                 document.getElementById('countdown').innerHTML = `Time until market closes: ${hours}h ${minutes}m ${seconds}s`;
             }
         }
