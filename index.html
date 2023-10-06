@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forex Market Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #countdown {
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Forex Market Countdown</h1>
+    <div id="countdown"></div>
+
+    <script>
+        // Define the market closing time (in UTC)
+        const marketClosingTime = new Date();
+        marketClosingTime.setUTCHours(21, 0, 0); // Adjust the time as needed
+
+        function updateCountdown() {
+            const currentTime = new Date();
+            const timeRemaining = marketClosingTime - currentTime;
+
+            if (timeRemaining <= 0) {
+                document.getElementById('countdown').innerHTML = 'Market is closed.';
+            } else {
+                const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+                document.getElementById('countdown').innerHTML = `Time until market closes: ${hours}h ${minutes}m ${seconds}s`;
+            }
+        }
+
+        // Update the countdown every second
+        setInterval(updateCountdown, 1000);
+
+        // Initial call to set the initial countdown value
+        updateCountdown();
+    </script>
+</body>
+</html>
